@@ -1,17 +1,9 @@
-var casper = require('casper').create({
-  verbose: true,
-  logLevel: "error",
-  clientScripts: [
-    "parser.js"
-  ]
-});
-
 var utils = require("utils");
 var fs = require('fs');
 
 var storage = require('storage');
+var casper = require('app').app;
 
-var debug = true;
 var url = 'http://www.shine.com/job-search/simple/it/';
 var domain = storage.extractDomain(url)
 
@@ -44,7 +36,7 @@ function processPage() {
     //console.log("Going to store it");
     var ret = storage.persistData(domain, data);
 
-    jobs = jobs.concat(data);
+    //jobs = jobs.concat(data);
 
     //fs.write('data.json', JSON.stringify(jobs), 'w');
 
@@ -60,31 +52,6 @@ function processPage() {
     });
 };
 
-if (debug) {
-  casper.on('remote.message', function(msg) {
-    this.echo('remote message caught: ' + msg);
-  });
-
-  casper.on('page.error', function(msg, trace) {
-    this.echo('Error: ' + msg, 'ERROR');
-  });
-
-  casper.on('resource.error', function(msg) {
-    this.echo('resource error: ' + msg);
-  });
-
-  casper.on('resource.received', function(resource) {
-    //this.echo(resource.url);
-  });
-}
-
-// listening to a custom event
-casper.on('new.page.loading', function() {
-    this.echo('Crawling : ' + this.getCurrentUrl());
-});
-
-// Set screen resolution
-casper.options.viewportSize = { width: 1920, height: 1080 };
 
 // Main
 casper.start(url);
