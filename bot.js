@@ -2,9 +2,12 @@
 //source: http://snippets.aktagon.com/snippets/534-How-to-scrape-web-pages-with-PhantomJS-and-jQuery
 //http://phantomjs.org/
 
- var page = new WebPage(),
-     url = 'http://www.shine.com/job-search/simple/bangalore/',
-     stepIndex = 0;
+var page = new WebPage();
+
+var debug = false;
+var url = 'http://www.shine.com/job-search/simple/pune/';
+var selector = 'div.search_listingleft a span.snp_yoe_loc em.snp_loc';
+var stepIndex = 0;
 
  /**
   * From PhantomJS documentation:
@@ -39,7 +42,7 @@
      }
 
 
-     var title = page.evaluate(function() {
+    var title = page.evaluate(function() {
        return document.title;
     });
 
