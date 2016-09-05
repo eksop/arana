@@ -6,14 +6,9 @@ var fs = require('fs');
 /**
  * Persist Data
  */
-function persistData(domain, data, dir) {
+function persistData(data, dir) {
   for (var i = 0; i < data.length; i++) {
     var job_id = data[i].id;
-
-    if (dir == false)
-    {
-      dir = "data/job/" + domain;
-    }
 
     var file = dir + "/" + job_id + ".json";
 

@@ -21,7 +21,10 @@ var next_btn = config.getNextButtonSelector(host);
 
 var pages = config.parseKeyInOptions('pages', casper.cli.options, 50);
 var debug = config.parseKeyInOptions('debug', casper.cli.options);
-var destination = config.parseKeyInOptions('destination', casper.cli.options);
+
+var destDir = config.parseKeyInOptions('dest_dir', casper.cli.options, "data/job/" + host);
+var destFile = config.parseKeyInOptions('dest_file', casper.cli.options, "data/" + host + ".json"); // Not used right now
+var stdout = config.parseKeyInOptions('stdout', casper.cli.options; // Not used right now
 
 var count = 0;
 
@@ -52,7 +55,7 @@ function processPage() {
   var data = this.evaluate(getParseData);
   this.echo("Found new jobs : " + data.length);
 
-  var ret = storage.persistData(host, data, destination);
+  var ret = storage.persistData(data, dest);
 
   // If there is no nextButton on the page, then exit a script because we hit the last page
   if (this.exists(next_btn) == false) {
@@ -60,7 +63,7 @@ function processPage() {
   }
 
   // If we have crawled maximum
-  if (count >= pages) {
+  if (pages != 0 || count >= pages) {
     stopScript();
   }
 
