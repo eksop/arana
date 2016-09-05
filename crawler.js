@@ -21,6 +21,8 @@ var next_btn = config.getNextButtonSelector(host);
 
 var pages = config.parseKeyInOptions('pages', casper.cli.options, 50);
 var debug = config.parseKeyInOptions('debug', casper.cli.options);
+var destination = config.parseKeyInOptions('destination', casper.cli.options);
+
 var count = 0;
 
 // console.log("url: " + url);
@@ -50,7 +52,7 @@ function processPage() {
   var data = this.evaluate(getParseData);
   this.echo("Found new jobs : " + data.length);
 
-  var ret = storage.persistData(host, data);
+  var ret = storage.persistData(host, data, destination);
 
   // If there is no nextButton on the page, then exit a script because we hit the last page
   if (this.exists(next_btn) == false) {
