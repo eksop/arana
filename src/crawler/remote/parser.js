@@ -37,27 +37,18 @@ function parseShinePage () {
   var data = []
 
   var parse = [
-    ['id', 'div.search_listingleft a.cls_searchresult_a', 'attr', 'href'],
-    ['url', 'div.search_listingleft a.cls_searchresult_a', 'attr', 'href'],
-    ['title', 'div.search_listingleft a span.snp', 'text'],
-    ['company_name', 'div.search_listingleft a em.cls_cmpname', 'text'],
-    ['company_url', 'div.search_listingleft div.cmplogo a', 'attr', 'href'],
     ['company_img', 'div.search_listingleft div.cmplogo a img', 'attr', 'src'],
-    // ['apply_url', 'div.apply .cls_linkonhover a', 'attr', 'data-jurl'], // it's removed
-    ['posted_on', 'div.apply .share_links', 'text'],
-    ['experience', 'div.search_listingleft a span.snp_yoe', 'text'],
-    ['location', 'div.search_listingleft a span.snp_yoe_loc em.snp_loc', 'text'],
-    ['description', 'div.search_listingleft a .srcresult', 'text']
+    ['company_name', 'div.search_listingleft a em.cls_cmpname', 'text', ''],
+    ['company_url', 'div.search_listingleft div.cmplogo a', 'attr', 'href'],
+    ['description', 'div.search_listingleft a .srcresult', 'text', ''],
+    ['experience', 'div.search_listingleft a span.snp_yoe', 'text', ''],
+    ['id', 'div.search_listingleft a.cls_searchresult_a', 'attr', 'href'],
+    ['location', 'div.search_listingleft a span.snp_yoe_loc em.snp_loc', 'text', ''],
+    ['posted_on', 'div.apply .share_links', 'text', ''],
+    ['skills', 'div.search_listingleft .skl ul', 'text', ''],
+    ['title', 'div.search_listingleft a span.snp', 'text', ''],
+    ['url', 'div.search_listingleft a.cls_searchresult_a', 'attr', 'href']
   ]
-
-  /*
-  var skills_raw = row.querySelector('div.search_listingleft .skl ul').getElementsByTagName('li');
-  var skills = [];
-
-  for (var j = 0; j < skills_raw.length; j++) {
-    skills.push(skills_raw[j].textContent);
-  }
-  */
 
   Array.prototype.forEach.call(rows, function (row) {
     var job = {}
@@ -92,17 +83,18 @@ function parseNaukriPage () {
   var data = []
 
   var parse = [
-    ['id', 'a.content', 'attr', 'href'],
-    ['url', 'a.content', 'attr', 'href'],
-    ['title', 'a.content span.desig', 'text', ''],
+    ['company_img', 'a.content div.banner img', 'attr', 'src'],
+    ['company_name', 'a.content span.org', 'text', ''],
+    ['description', 'a.content div.more span.desc', 'text', ''],
     ['experience', 'a.content span.exp', 'text', ''],
+    ['id', 'a.content', 'attr', 'href'],
     ['location', 'a.content span.loc', 'text', ''],
-    ['salary', 'div.other_details span.salary', 'text', ''],
     ['posted_by', 'div.other_details div.rec_details a', 'text', ''],
     ['posted_on', 'div.other_details div.rec_details span.date', 'text', ''],
-    ['company_name', 'a.content span.org', 'text', ''],
-    ['company_img', 'a.content div.banner img', 'attr', 'src'],
-    ['description', 'a.content div.more span.desc', 'text', '']
+    ['salary', 'div.other_details span.salary', 'text', ''],
+    ['skills', 'a.content div.more div.desc span.skill', 'text', ''],
+    ['title', 'a.content span.desig', 'text', ''],
+    ['url', 'a.content', 'attr', 'href']
   ]
 
   Array.prototype.forEach.call(rows, function (row) {

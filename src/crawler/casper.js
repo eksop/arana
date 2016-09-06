@@ -2,7 +2,7 @@ var require = patchRequire(require)
 
 var casper = require('casper').create({
   verbose: true,
-  logLevel: 'info',
+  logLevel: 'error',
   pageSettings: {
     loadImages: false,        // The WebPage instance used by Casper will
     loadPlugins: false         // use these settings

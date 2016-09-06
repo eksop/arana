@@ -26,7 +26,7 @@ var pages = config.parseKeyInOptions('pages', casper.cli.options, 50)
 var stdout = config.parseKeyInOptions('stdout', casper.cli.options) // Not used right now
 var dest_dir = config.parseKeyInOptions('dest_dir', casper.cli.options, 'scraped/' + host)
 
-// var dest_file = config.parseKeyInOptions('dest_file', casper.cli.options, 'data/' + host + '.json'); // Not used right now
+// var dest_file = config.parseKeyInOptions('dest_file', casper.cli.options, 'data/' + host + '.json') // Not used right now
 // var debug = config.parseKeyInOptions('debug', casper.cli.options)
 
 casper.log('url: ' + url, 'info')
