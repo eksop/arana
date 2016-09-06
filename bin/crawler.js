@@ -1,4 +1,4 @@
-// var utils = require('utils')
+var utils = require('utils')
 var casper = require('../src/crawler/casper').casper
 var config = require('../src/crawler/config')
 var storage = require('../src/crawler/storage')
@@ -12,23 +12,22 @@ var url = config.parseCrawlUrl(casper.cli.options)
 
 if (url === false) {
   casper.log('Wrong URL', 'error')
-  casper.exit()
+  casper.exit(2)
 }
 
 casper.log('Crawling URL : ' + url, 'info')
 
+var count = 0
+
 var host = config.getCrawlHost(url)
 var selector = config.getWaitSelector(host)
 var next_btn = config.getNextButtonSelector(host)
-
 var pages = config.parseKeyInOptions('pages', casper.cli.options, 50)
-// var debug = config.parseKeyInOptions('debug', casper.cli.options)
-
-var dest_dir = config.parseKeyInOptions('dest_dir', casper.cli.options, 'scraped/' + host)
-// var dest_file = config.parseKeyInOptions('dest_file', casper.cli.options, 'data/' + host + '.json'); // Not used right now
 var stdout = config.parseKeyInOptions('stdout', casper.cli.options) // Not used right now
+var dest_dir = config.parseKeyInOptions('dest_dir', casper.cli.options, 'scraped/' + host)
 
-var count = 0
+// var dest_file = config.parseKeyInOptions('dest_file', casper.cli.options, 'data/' + host + '.json'); // Not used right now
+// var debug = config.parseKeyInOptions('debug', casper.cli.options)
 
 casper.log('url: ' + url, 'info')
 casper.log('host: ' + host, 'info')
@@ -40,7 +39,8 @@ casper.log('dest_dir: ' + dest_dir, 'info')
  * Stop the script
  */
 function stopScript () {
-  this.echo('STOPPING SCRIPT').exit()
+  casper.log('xt stopping script prematurely', 'error')
+  casper.exit(3)
 }
 
 /**
@@ -62,7 +62,7 @@ function processPage () {
   if (stdout) {
     printDataOnStdout(data)
   } else {
-    storage.persistData(data, dest_dir)
+    storage.persistData(casper, data, dest_dir)
   }
 
   var next_sel = null
@@ -80,13 +80,13 @@ function processPage () {
 
   if (next_sel == null) {
     this.log('Next button not found', 'info')
-    stopScript()
+    casper.exit(0)
   }
 
   // If we have crawled maximum
   if (pages !== 0 && count >= pages) {
     this.log('End of count against pages : ' + count, 'info')
-    stopScript()
+    casper.exit(0)
   }
 
   // If script didn't finish, then click on the next button and go to process next page

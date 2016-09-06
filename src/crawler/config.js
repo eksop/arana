@@ -15,6 +15,13 @@ var host_next = {
   ]
 }
 
+// exports.exit_codes = {
+//   'success': 0,
+//   'invalidUrl': 2,
+//   'storageIssue': 3,
+//   'waitTimeout': 4
+// }
+
 /**
  * Extract domain name
  */

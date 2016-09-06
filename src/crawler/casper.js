@@ -12,28 +12,27 @@ var casper = require('casper').create({
   ]
 })
 
+casper.options.viewportSize = { width: 1920, height: 1080 }
+
 casper.on('remote.message', function (msg) {
-  this.echo('remote message caught: ' + msg)
+  this.log('xt remote message caught: ' + msg, 'info')
 })
 
 casper.on('page.error', function (msg, trace) {
-  this.echo('Error: ' + msg, 'ERROR')
+  this.log('xt page error: ' + msg, 'ERROR', 'error')
 })
 
 casper.on('resource.error', function (msg) {
-  this.echo('resource error: ' + msg)
+  this.log('xt resource error: ' + msg, 'info')
 })
 
 casper.on('resource.received', function (resource) {
-  // this.echo(resource.url)
+  this.log('xt resource received: ' + resource.url, 'debug')
 })
 
-// listening to a custom event
+// Custom event
 casper.on('new.page.loading', function () {
-  this.log('Opening new page : ' + this.getCurrentUrl(), 'info')
+  this.log('xt opening new page: ' + this.getCurrentUrl(), 'info')
 })
-
-// Set screen resolution
-casper.options.viewportSize = { width: 1920, height: 1080 }
 
 exports.casper = casper
