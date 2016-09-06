@@ -42,10 +42,54 @@ function parseShinePage() {
 /**
  * Scrape page data
  */
+function parseNaukriPage() {
+  var rows = document.querySelectorAll('div.row[itemtype="http://schema.org/JobPosting"]');
+  var data = [];
+
+  Array.prototype.forEach.call(rows, function(row){
+    var job = {}
+
+    job.id = row.querySelector("a.content ").getAttribute("href", 2).match(/^.*[^0-9]([0-9]+)\?src=.*$/)[1];
+    job.url = row.querySelector("a.content ").getAttribute("href", 2);
+    job.title = row.querySelector("a.content span.desig").textContent;
+    job.company = row.querySelector("a.content span.org").textContent;
+
+    job.experience = row.querySelector("a.content span.exp").textContent;
+    job.location = row.querySelector("a.content span.loc").textContent;
+
+    if (row.querySelector("div.other_details span.salary"))
+    {
+      job.salary = row.querySelector("div.other_details span.salary").textContent.replace(/^\s+|\s+$/g, '');
+    }
+
+    job.posted_by = row.querySelector("div.other_details div.rec_details a").textContent.replace(/^\s+|\s+$/g, '');
+    job.date = row.querySelector("div.other_details div.rec_details span.date").textContent;
+
+    if (row.querySelector("a.content div.banner img"))
+    {
+      job.company_img = row.querySelector("a.content div.banner img").getAttribute("src")
+    }
+
+    if (row.querySelector("div.more span.desc"))
+    {
+      job.description = row.querySelector("a.content div.more span.desc").textContent;
+    }
+
+    data.push(job);
+  });
+
+  return data;
+}
+
+/**
+ * Scrape page data
+ */
 function parsePage() {
   var host = window.location.host;
 
   if (host == "www.shine.com") {
     return parseShinePage();
+  } else if (host == "www.naukri.com") {
+    return parseNaukriPage();
   }
 }

@@ -2,14 +2,22 @@ var require = patchRequire(require);
 
 var host_wait = {
   "www.shine.com": 'div.search_listingleft a span.snp_yoe_loc em.snp_loc',
+  "www.naukri.com": 'div.row[type=tuple]',
 }
 
 var host_next = {
-  "www.shine.com": 'input.cls_paginate.submit[data-type=next]',
+  "www.shine.com": [
+    'input.cls_paginate.submit[data-type=next]',
+  ],
+  "www.naukri.com": [
+    'div.pagination > a:nth-child(2) > button',
+    'div.pagination > a > button',
+  ],
 }
 
 var host_crawl = {
   "www.shine.com": 'http://www.shine.com/job-search/simple/it/',
+  "www.naukri.com": 'https://www.naukri.com/jobs-in-bangalore',
 }
 
 /**

@@ -1,4 +1,5 @@
 var utils = require('utils')
+// var x = require('casper').selectXPath;
 var casper = require('app').app;
 var config = require('config');
 var storage = require('storage');
@@ -13,7 +14,7 @@ if (url == false)
   casper.exit();
 }
 
-// casper.log("Crawling URL : " + url, "info");
+casper.log("Crawling URL : " + url, "info");
 
 var host = config.getCrawlHost(url);
 var selector = config.getWaitSelector(host);
@@ -22,15 +23,17 @@ var next_btn = config.getNextButtonSelector(host);
 var pages = config.parseKeyInOptions('pages', casper.cli.options, 50);
 var debug = config.parseKeyInOptions('debug', casper.cli.options);
 
-var destDir = config.parseKeyInOptions('dest_dir', casper.cli.options, "data/job/" + host);
-var destFile = config.parseKeyInOptions('dest_file', casper.cli.options, "data/" + host + ".json"); // Not used right now
-var stdout = config.parseKeyInOptions('stdout', casper.cli.options; // Not used right now
+var dest_dir = config.parseKeyInOptions('dest_dir', casper.cli.options, "data/job/" + host);
+var dest_file = config.parseKeyInOptions('dest_file', casper.cli.options, "data/" + host + ".json"); // Not used right now
+var stdout = config.parseKeyInOptions('stdout', casper.cli.options); // Not used right now
 
 var count = 0;
 
-// console.log("url: " + url);
-// console.log("selector: " + selector);
-// console.log("next_btn: " + next_btn);
+casper.log("url: " + url, "info");
+casper.log("host: " + host, "info");
+casper.log("selector: " + selector, "info");
+casper.log("next_btn: " + next_btn, "info");
+casper.log("dest_dir: " + dest_dir, "info");
 
 /**
  * Stop the script
@@ -53,26 +56,54 @@ function processPage() {
   count += 1;
 
   var data = this.evaluate(getParseData);
-  this.echo("Found new jobs : " + data.length);
+  this.log("Found new jobs : " + data.length, 'info');
 
-  var ret = storage.persistData(data, dest);
+  if (stdout) {
+    printDataOnStdout(data)
+  } else {
+    storage.persistData(data, dest_dir);
+  }
 
-  // If there is no nextButton on the page, then exit a script because we hit the last page
-  if (this.exists(next_btn) == false) {
+  var next_sel = null;
+
+  for (var i = 0; i <next_btn.length; i++) {
+    if (this.exists(next_btn[i]) == true) {
+      next_sel = next_btn[i];
+
+      this.log("Button found! : " + next_btn[i], 'info')
+      break;
+    }
+
+    this.log("Button doesn't exists : " + next_btn[i], 'info')
+  }
+
+  if (next_sel == null) {
+    this.log("Next button not found", 'info')
     stopScript();
   }
 
   // If we have crawled maximum
-  if (pages != 0 || count >= pages) {
+  if (pages != 0 && count >= pages) {
+    this.log("End of count against pages : " + count, 'info')
     stopScript();
   }
 
   //If script didn't finish, then click on the next button and go to process next page
-  this.thenClick(next_btn).then(function() {
+  this.thenClick(next_sel).then(function() {
     this.emit('new.page.loading');
     this.waitForSelector(selector, processPage, stopScript);
   });
+
 };
+
+/**
+ * Print on stdout
+ */
+function printDataOnStdout(data) {
+  for (var i = 0; i < data.length; i++) {
+    console.log(JSON.stringify(data[i]));
+  }
+}
 
 // Main
 casper.start(url);

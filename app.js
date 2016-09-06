@@ -2,7 +2,7 @@ var require = patchRequire(require);
 
 var casper = require('casper').create({
   verbose: true,
-  logLevel: "error",
+  logLevel: "info",
   pageSettings: {
     loadImages:  false,        // The WebPage instance used by Casper will
     loadPlugins: false         // use these settings
@@ -31,7 +31,7 @@ casper.on('resource.received', function(resource) {
 
 // listening to a custom event
 casper.on('new.page.loading', function() {
-    this.echo('Crawling : ' + this.getCurrentUrl());
+    this.log('Opening new page : ' + this.getCurrentUrl(), 'info');
 });
 
 // Set screen resolution
