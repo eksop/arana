@@ -47,7 +47,7 @@ function stopScript () {
  * Get parsed data
  */
 function getParseData () {
-  return parsePage()
+  return parseListPage()
 }
 
 /**

@@ -32,7 +32,7 @@ function setParsedValue (obj, key, element, selector, type, attr) {
 /**
  * Scrape page data
  */
-function parseShinePage () {
+function parseShineListPage () {
   var rows = document.querySelectorAll('div.search_listing')
   var data = []
 
@@ -69,6 +69,8 @@ function parseShinePage () {
       job.posted_on = job.posted_on.match(/^Posted Date\s+(.*)$/)[1]
     }
 
+    console.log('Found a job : ' + job.id)
+
     data.push(job)
   })
 
@@ -78,7 +80,7 @@ function parseShinePage () {
 /**
  * Scrape page data
  */
-function parseNaukriPage () {
+function parseNaukriListPage () {
   var rows = document.querySelectorAll('div.row[itemtype="http://schema.org/JobPosting"]')
   var data = []
 
@@ -108,6 +110,8 @@ function parseNaukriPage () {
       job.id = job.id.match(/^.*[^0-9]([0-9]+)\?src=.*$/)[1]
     }
 
+    console.log('Found a job : ' + job.id)
+
     data.push(job)
   })
 
@@ -117,12 +121,14 @@ function parseNaukriPage () {
 /**
  * Scrape page data
  */
-function parsePage () {
+function parseListPage () {
   var host = window.location.host
 
+  console.log('Host found from page : ' + host);
+
   if (host === 'www.shine.com') {
-    return parseShinePage()
+    return parseShineListPage()
   } else if (host === 'www.naukri.com') {
-    return parseNaukriPage()
+    return parseNaukriListPage()
   }
 }

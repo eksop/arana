@@ -30,6 +30,10 @@ casper.on('resource.received', function (resource) {
   this.log('xt resource received: ' + resource.url, 'debug')
 })
 
+casper.on('remote.message', function (msg) {
+  this.log('xt remote message: ' + msg, 'info')
+})
+
 // Custom event
 casper.on('new.page.loading', function () {
   this.log('xt opening new page: ' + this.getCurrentUrl(), 'info')

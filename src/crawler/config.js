@@ -15,13 +15,6 @@ var host_next = {
   ]
 }
 
-// exports.exit_codes = {
-//   'success': 0,
-//   'invalidUrl': 2,
-//   'storageIssue': 3,
-//   'waitTimeout': 4
-// }
-
 /**
  * Extract domain name
  */
@@ -53,7 +46,6 @@ function validateCrawl (url) {
 }
 
 function parseKeyInOptions (key, options, def) {
-  // https://stackoverflow.com/questions/1098040/checking-if-a-key-exists-in-a-javascript-object
   def = typeof def !== 'undefined' ? def : false
 
   if (options.hasOwnProperty(key)) {

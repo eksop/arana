@@ -2,7 +2,6 @@ var require = patchRequire(require)
 
 var utils = require('utils')
 var fs = require('fs')
-// var config = require('config')
 
 /**
  * Persist Data
