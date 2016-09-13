@@ -12,6 +12,8 @@ var casper = require('casper').create({
   ]
 })
 
+casper.userAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X)')
+
 casper.options.viewportSize = { width: 1920, height: 1080 }
 
 casper.on('remote.message', function (msg) {
