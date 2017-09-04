@@ -124,11 +124,13 @@ function parseNaukriListPage () {
 function parseListPage () {
   var host = window.location.host
 
-  console.log('Host found from page : ' + host);
+  console.log('Host found from page : ' + host)
 
   if (host === 'www.shine.com') {
     return parseShineListPage()
-  } else if (host === 'www.naukri.com') {
+  }
+
+  if (host === 'www.naukri.com') {
     return parseNaukriListPage()
   }
 }

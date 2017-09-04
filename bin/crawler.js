@@ -56,7 +56,7 @@ function getParseData () {
 function processPage () {
   count += 1
 
-  var data = this.evaluate(getParseData)
+    var data = this.evaluate(getParseData)
   this.log('Found new jobs : ' + data.length, 'info')
 
   if (stdout) {
