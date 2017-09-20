@@ -8,7 +8,7 @@ var casper = require('casper').create({
     loadPlugins: false         // use these settings
   },
   clientScripts: [
-    './src/crawler/remote/parser.js'
+    './src/remote/parser.js'
   ]
 })
 

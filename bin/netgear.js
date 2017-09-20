@@ -6,7 +6,7 @@ var action = config.parseKeyInOptions('action', casper.cli.options, 'login')
 var url = config.parseKeyInOptions('url', casper.cli.options, 'http://192.168.5.1')
 
 // var stdout = config.parseKeyInOptions('stdout', casper.cli.options) // Not used right now
-// var dest_dir = config.parseKeyInOptions('dest_dir', casper.cli.options, 'scraped/' + host)
+// var dest_dir = config.parseKeyInOptions('dest_dir', casper.cli.options, 'data/' + host)
 
 // var dest_file = config.parseKeyInOptions('dest_file', casper.cli.options, 'data/' + host + '.json') // Not used right now
 // var debug = config.parseKeyInOptions('debug', casper.cli.options)

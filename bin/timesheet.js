@@ -39,9 +39,9 @@ function processPage () {
 casper.start(url)
 casper.setHttpAuth('webyog', 'cameo15jay')
 
-casper.wait(10000, function () {
-  this.capture('homepage.png')
-})
+// casper.wait(10000, function () {
+//  this.capture('homepage.png')
+// })
 
 casper.waitForSelector('table > tbody > tr.odd', processPage, stopScript)
 
