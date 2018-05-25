@@ -2,6 +2,7 @@ var utils = require('utils')
 var casper = require('../src/crawler/casper').casper
 var config = require('../src/crawler/config')
 var storage = require('../src/crawler/storage')
+var log = require('../src/crawler/log')
 
 /**
  * Get url from cli arguments
@@ -56,7 +57,7 @@ function getParseData () {
 function processPage () {
   count += 1
 
-    var data = this.evaluate(getParseData)
+  var data = this.evaluate(getParseData)
   this.log('Found new jobs : ' + data.length, 'info')
 
   if (stdout) {
@@ -91,7 +92,6 @@ function processPage () {
 
   // If script didn't finish, then click on the next button and go to process next page
   this.thenClick(next_sel).then(function () {
-    this.emit('new.page.loading')
     this.waitForSelector(selector, processPage, stopScript)
   })
 }
@@ -100,6 +100,8 @@ function processPage () {
  * Print on stdout
  */
 function printDataOnStdout (data) {
+  //log.logDebug('Got Data from URL', data)
+
   for (var i = 0; i < data.length; i++) {
     console.log(JSON.stringify(data[i]))
   }

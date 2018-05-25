@@ -1,11 +1,11 @@
 var require = patchRequire(require)
 
-var host_wait = {
+var hostWait = {
   'www.shine.com': 'div.search_listingleft a span.snp_yoe_loc em.snp_loc',
   'www.naukri.com': 'div.row[type=tuple]'
 }
 
-var host_next = {
+var hostNext = {
   'www.shine.com': [
     'input.cls_paginate.submit[data-type=next]'
   ],
@@ -38,7 +38,7 @@ function extractHost (url) {
 function validateCrawl (url) {
   var host = extractHost(url)
 
-  if (host_wait.hasOwnProperty(host) && host_next.hasOwnProperty(host)) {
+  if (hostWait.hasOwnProperty(host) && hostNext.hasOwnProperty(host)) {
     return true
   }
 
@@ -58,11 +58,11 @@ function parseKeyInOptions (key, options, def) {
 exports.parseKeyInOptions = parseKeyInOptions
 
 exports.getWaitSelector = function getWaitSelector (host) {
-  return host_wait[host]
+  return hostWait[host]
 }
 
 exports.getNextButtonSelector = function getNextButtonSelector (host) {
-  return host_next[host]
+  return hostNext[host]
 }
 
 exports.getCrawlHost = function getCrawlHost (url) {

@@ -1,9 +1,0 @@
-{
-  "name": "xamii-crawler",
-  "version": "0.0.1",
-  "private": true,
-  "dependencies": {
-    "cheerio": "^0.22.0",
-    "request": "^2.74.0"
-  }
-}

@@ -8,9 +8,9 @@ var fs = require('fs')
  */
 function persistData (casper, data, dir) {
   for (var i = 0; i < data.length; i++) {
-    var job_id = data[i].id
+    var dataId = data[i].id
 
-    var file = dir + '/' + job_id + '.json'
+    var file = dir + fs.separator + dataId + '.json'
 
     if (!fs.isDirectory(dir)) {
       if (!fs.makeDirectory(dir)) {
@@ -21,7 +21,7 @@ function persistData (casper, data, dir) {
 
     if (!fs.exists(file)) {
       fs.write(file, JSON.stringify(data[i]), 'w')
-      casper.log('xt job added to ' + file, 'info')
+      casper.log('xt data added to ' + file, 'info')
     }
   }
 }

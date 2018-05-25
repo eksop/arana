@@ -2,7 +2,7 @@ var utils = require('utils')
 var casper = require('../src/crawler/casper').casper
 var config = require('../src/crawler/config')
 
-var url = config.parseKeyInOptions('url', casper.cli.options, 'http://attendance.ts.webyog.com/report.php#2712')
+var url = config.parseKeyInOptions('url', casper.cli.options, 'http://attendance.ts.cloudmagic.com/cloudmagic/report.php#2712')
 
 /**
  * Stop the script
@@ -17,10 +17,11 @@ function stopScript () {
  */
 function getParseData () {
   var data = {
-    'reach_time': document.querySelector('#attendance > tbody > tr.odd > td:nth-child(2)').textContent.replace(/^\s+|\s+$/g, ''),
-    'service_time': document.querySelector('#attendance > tbody > tr.odd > td:nth-child(6)').textContent.replace(/^\s+|\s+$/g, ''),
-    'break_time': document.querySelector('#attendance > tbody > tr.odd > td:nth-child(5)').textContent.replace(/^\s+|\s+$/g, ''),
-    'break_count': document.querySelector('#attendance > tbody > tr.odd > td:nth-child(4)').textContent.replace(/^\s+|\s+$/g, '')
+    'first_in': document.querySelector('#attendance > tbody > tr.odd > td:nth-child(2)').textContent.replace(/^\s+|\s+$/g, ''),
+    'last_out': document.querySelector('#attendance > tbody > tr.odd > td:nth-child(3)').textContent.replace(/^\s+|\s+$/g, ''),
+    'inside_office': document.querySelector('#attendance > tbody > tr.odd > td:nth-child(6)').textContent.replace(/^\s+|\s+$/g, ''),
+    'out_of_office': document.querySelector('#attendance > tbody > tr.odd > td:nth-child(5)').textContent.replace(/^\s+|\s+$/g, ''),
+    'breaks': document.querySelector('#attendance > tbody > tr.odd > td:nth-child(4)').textContent.replace(/^\s+|\s+$/g, '')
   }
 
   return data
