@@ -1,0 +1,13 @@
+{
+  "host": "attendance.ts.cloudmagic.com",
+  "selector": "#attendance > tbody > tr.odd",
+  "waiter": "#attendance > tbody > tr.odd",
+  "pagination": [],
+  "parser": [
+    ["first_in", "td:nth-child(2)", "text", ""],
+    ["last_out", "td:nth-child(3)", "text", ""],
+    ["inside", "td:nth-child(6)", "text", ""],
+    ["outside", "td:nth-child(5)", "text", ""],
+    ["breaks", "td:nth-child(4)", "text", ""]
+  ]
+}

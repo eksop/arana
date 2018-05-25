@@ -1,107 +1,86 @@
 var utils = require('utils')
-var casper = require('../src/crawler/casper').casper
-var config = require('../src/crawler/config')
-var storage = require('../src/crawler/storage')
-var log = require('../src/crawler/log')
+var casper = require('../src/casper').casper
+var option = require('../src/option')
+var storage = require('../src/storage')
+var log = require('../src/log')
 
-/**
- * Get url from cli arguments
- *
- * @type array
- */
-var url = config.parseCrawlUrl(casper.cli.options)
+// Parse options
+var url = option.get('url', casper.cli.options, null)
+var crawler = option.get('crawler', casper.cli.options, null)
+var pages = option.get('pages', casper.cli.options, 50)
+var stdout = option.get('stdout', casper.cli.options)
+var file = option.get('file', casper.cli.options, null)
+// var debug = option.get('debug', casper.cli.options)
 
-if (url === false) {
-  casper.log('Wrong URL', 'error')
-  casper.exit(2)
-}
+var json = require(crawler)
 
-casper.log('Crawling URL : ' + url, 'info')
+var host = json['host']
+var waiter = json['waiter']
+var pagination = json['pagination']
 
 var count = 0
-
-var host = config.getCrawlHost(url)
-var selector = config.getWaitSelector(host)
-var next_btn = config.getNextButtonSelector(host)
-var pages = config.parseKeyInOptions('pages', casper.cli.options, 50)
-var stdout = config.parseKeyInOptions('stdout', casper.cli.options) // Not used right now
-var dest_dir = config.parseKeyInOptions('dest_dir', casper.cli.options, 'data/' + host)
-
-// var dest_file = config.parseKeyInOptions('dest_file', casper.cli.options, 'data/' + host + '.json') // Not used right now
-// var debug = config.parseKeyInOptions('debug', casper.cli.options)
-
-casper.log('url: ' + url, 'info')
-casper.log('host: ' + host, 'info')
-casper.log('selector: ' + selector, 'info')
-casper.log('next_btn: ' + next_btn, 'info')
-casper.log('dest_dir: ' + dest_dir, 'info')
 
 /**
  * Stop the script
  */
-function stopScript () {
-  casper.log('xt stopping script prematurely', 'error')
+function stop_script () {
+  log.debug('xt stopping script prematurely', {}, 'ERROR')
   casper.exit(3)
-}
-
-/**
- * Get parsed data
- */
-function getParseData () {
-  return parseListPage()
 }
 
 /**
  * Process page data
  */
-function processPage () {
+function process_page () {
   count += 1
 
-  var data = this.evaluate(getParseData)
-  this.log('Found new jobs : ' + data.length, 'info')
+  var data = this.evaluate(function (json) {
+    // parse_page exists in remote parser.js
+    return parse_page(json)
+  }, json)
+
+  log.debug('Found new jobs : ' + data.length)
 
   if (stdout) {
-    printDataOnStdout(data)
+    print_data(data)
   } else {
-    storage.persistData(casper, data, dest_dir)
+    storage.store(casper, data, file)
   }
 
   var next_sel = null
 
-  for (var i = 0; i < next_btn.length; i++) {
-    if (this.exists(next_btn[i]) === true) {
-      next_sel = next_btn[i]
+  for (var i = 0; i < pagination.length; i++) {
+    if (this.exists(pagination[i]) === true) {
+      next_sel = pagination[i]
 
-      this.log('Button found! : ' + next_btn[i], 'info')
+      log.debug('Button exists : ' + pagination[i])
       break
     }
 
-    this.log('Button doesn\'t exists : ' + next_btn[i], 'info')
+    log.debug('Button not exists : ' + pagination[i])
   }
 
   if (next_sel == null) {
-    this.log('Next button not found', 'info')
+    log.debug('Next button not found')
     casper.exit(0)
   }
 
   // If we have crawled maximum
   if (pages !== 0 && count >= pages) {
-    this.log('End of count against pages : ' + count, 'info')
+    log.debug('End of count against pages : ' + count)
     casper.exit(0)
   }
 
   // If script didn't finish, then click on the next button and go to process next page
   this.thenClick(next_sel).then(function () {
-    this.waitForSelector(selector, processPage, stopScript)
+    this.waitForSelector(waiter, process_page, stop_script)
   })
 }
 
 /**
  * Print on stdout
  */
-function printDataOnStdout (data) {
-  //log.logDebug('Got Data from URL', data)
-
+function print_data (data) {
   for (var i = 0; i < data.length; i++) {
     console.log(JSON.stringify(data[i]))
   }
@@ -109,5 +88,5 @@ function printDataOnStdout (data) {
 
 // Main
 casper.start(url)
-casper.waitForSelector(selector, processPage, stopScript)
+casper.waitForSelector(waiter, process_page, stop_script)
 casper.run()

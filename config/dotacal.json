@@ -1,0 +1,19 @@
+{
+  "host": "liquiddota.com",
+  "selector": "#evcal > tbody > tr > td.evc-l",
+  "waiter": "#evcal > tbody > tr > td:nth-child(1) > div > div:nth-child(1) > span",
+  "pagination": [],
+  "parser": [
+    ["day", "div > div.ev-feed", "attr", "data-day"],
+    ["league", "div > div.ev-feed > div.ev-block", "loop", [
+      ["id", "div.ev-head > div > div.ev-ctrl > span", "attr", "data-event-id"],
+      ["name", "div.ev-head > div > div.ev-ctrl > span", "text", ""],
+      ["time", "div.ev-head > span.ev-timer", "text", ""],
+      ["stage", "div.ev-stage", "text", ""],
+      ["match", "div.ev-body > div.ev-match > div", "loop", [
+        ["teams", "span:nth-child(1)", "text", ""],
+        ["time", "span:nth-child(2)", "text", ""]
+      ]]
+    ]]
+  ]
+}

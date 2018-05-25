@@ -1,0 +1,23 @@
+{
+  "host": "naukri.com",
+  "selector": "div.row[itemtype=\"http://schema.org/JobPosting\"]",
+  "waiter": "div.row[type=tuple]",
+  "pagination": [
+    "div.pagination > a:nth-child(2) > button",
+    "div.pagination > a > button"
+  ],
+  "parser": [
+    ["company_image", "a.content div.banner img", "attr", "src"],
+    ["company_name", "a.content span.org", "text", ""],
+    ["description", "a.content div.more span.desc", "text", ""],
+    ["experience", "a.content span.exp", "text", ""],
+    ["job_id", "a.content", "attr", "href"],
+    ["location", "a.content span.loc", "text", ""],
+    ["posted_by", "div.other_details div.rec_details a", "text", ""],
+    ["posted_on", "div.other_details div.rec_details span.date", "text", ""],
+    ["salary", "div.other_details span.salary", "text", ""],
+    ["skills", "a.content div.more div.desc span.skill", "text", ""],
+    ["title", "a.content span.desig", "text", ""],
+    ["url", "a.content", "attr", "href"]
+  ]
+}

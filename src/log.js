@@ -176,5 +176,5 @@ XtLog.prototype.log_debug = function (traceNo) {
   return this.log_it()
 }
 
-exports.logJson = xtLogJson
-exports.logDebug = xtLogDebug
+exports.json = xtLogJson
+exports.debug = xtLogDebug
