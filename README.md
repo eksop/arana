@@ -2,6 +2,21 @@
 
 Arana is web scraper.
 
+## Install
+
+You need to install casperjs and phantomjs for arana to work
+
+``` shell
+# Make sure npm installed
+npm -g install phantomjs-prebuilt casperjs
+```
+
+Then clone the repo
+
+``` shell
+git clone https://github.com/rajats105/arana.git ~/arana
+```
+
 ## Examples
 
 Scraping job lisitings from naukri
@@ -32,6 +47,8 @@ Config file
   ]
 }
 ```
+
+Run
 
 ``` shell
 cd ~/arana
