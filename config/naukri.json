@@ -11,7 +11,6 @@
     ["company_name", "a.content span.org", "text", ""],
     ["description", "a.content div.more span.desc", "text", ""],
     ["experience", "a.content span.exp", "text", ""],
-    ["job_id", "a.content", "attr", "href"],
     ["location", "a.content span.loc", "text", ""],
     ["posted_by", "div.other_details div.rec_details a", "text", ""],
     ["posted_on", "div.other_details div.rec_details span.date", "text", ""],
