@@ -8,7 +8,7 @@ Scraping job lisitings from naukri
 
 Config file
 
-``` json
+``` javascript
 {
   "host": "naukri.com",
   "selector": "div.row[itemtype=\"http://schema.org/JobPosting\"]",
@@ -36,12 +36,12 @@ Config file
 ``` shell
 cd ~/arana
 
-casperjs ~/arana/bin/crawler.js --disk-cache=true --url="https://www.naukri.com/jobs-in-bangalore" --crawler=~/arana/config/naukri.json --pages=1 --stdout | jq .`
+casperjs ~/arana/bin/crawler.js --disk-cache=true --url="https://www.naukri.com/jobs-in-bangalore" --crawler=~/arana/config/naukri.json --pages=1 --stdout | jq .
 ```
 
 Output
 
-``` json
+``` javascript
 {
   "company_image": false,
   "company_name": "AUTODESK INDIA PRIVATE LIMITED",
