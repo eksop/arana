@@ -1,6 +1,6 @@
 # arana
 
-Arana is web scraper.
+Arana is web scraper. It built on top of CasperJS. It works with purely dynamically loaded websites.
 
 ## Install
 
