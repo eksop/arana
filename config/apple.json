@@ -1,0 +1,15 @@
+{
+  "host": "apple.com",
+  "selector": "table#jobs_list tbody tr.searchresult",
+  "waiter": "table#jobs_list tbody tr.searchresult td.title a",
+  "pagination": [
+    "a.arrow_next.enabled"
+  ],
+  "parser": [
+    ["title", "tr.searchresult td.title a", "text", ""],
+    ["job_id", "tr.searchresult td.title a", "attr", "id"],
+    ["job_type", "tr.searchresult td:nth-child(2) p", "text", ""],
+    ["location", "tr.searchresult td:nth-child(3) p", "text", ""],
+    ["posted_on", "tr.searchresult td:nth-child(4) p", "text", ""]
+  ]
+}

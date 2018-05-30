@@ -29,6 +29,28 @@ function parse_element (element, selector, type, attr) {
   return null
 }
 
+function parse_link (element, selector, type, attr) {
+  attr = typeof attr !== 'undefined' ? attr : 'url'
+
+  if (selector == '') {
+    element.click()
+  } else {
+    element.querySelector(selector).click()
+  }
+
+  console.log(element.querySelector(selector))
+
+  if (attr == 'url') {
+    var url = window.location.href
+    console.log(url)
+    window.history.back()
+
+    return url
+  }
+
+  return null
+}
+
 function parse_key (element, selector, parser) {
   var data = []
   var rows = element.querySelectorAll(selector)
@@ -40,10 +62,15 @@ function parse_key (element, selector, parser) {
 
       if (parser[i][2] == 'loop') {
         fetched[parser[i][0]] = parse_key(row, parser[i][1], parser[i][3])
+        continue
       }
-      else {
-        fetched[parser[i][0]] = parse_element(row, parser[i][1], parser[i][2], parser[i][3])
+
+      if (parser[i][2] == 'page') {
+        fetched[parser[i][0]] = parse_link(row, parser[i][1], parser[i][3])
+        continue
       }
+
+      fetched[parser[i][0]] = parse_element(row, parser[i][1], parser[i][2], parser[i][3])
     }
 
     data.push(fetched)

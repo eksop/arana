@@ -11,8 +11,7 @@ var casper = require('casper').create({
     loadPlugins: true         // use these settings
   },
   clientScripts: [
-    './remote/parser.js',
-    './remote/jquery.min.js'
+    './remote/parser.js'
   ]
 })
 
@@ -48,7 +47,7 @@ casper.on('resource.requested', function (request, network) {
 
 // Page related
 casper.on('page.resource.received', function (response) {
-  log.debug('Resource Recieved: ' + response.url, response, 'INFO')
+  //log.debug('Resource Recieved: ' + response.url, response, 'INFO')
 })
 
 casper.on('page.resource.requested', function (request, network) {
@@ -56,7 +55,7 @@ casper.on('page.resource.requested', function (request, network) {
 })
 
 casper.on('page.error', function (msg, trace) {
-  log.debug('Page Error: ' + msg, trace, 'ERROR')
+  //log.debug('Page Error: ' + msg, trace, 'ERROR')
 })
 
 // Casper Object related

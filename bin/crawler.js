@@ -10,7 +10,7 @@ var crawler = option.get('crawler', casper.cli.options, null)
 var pages = option.get('pages', casper.cli.options, 50)
 var stdout = option.get('stdout', casper.cli.options)
 var file = option.get('file', casper.cli.options, null)
-// var debug = option.get('debug', casper.cli.options)
+var test = option.get('test', casper.cli.options)
 
 var json = require(crawler)
 
@@ -34,6 +34,10 @@ function stop_script () {
 function process_page () {
   count += 1
 
+  if (test) {
+    this.capture('screen/page_' + count + '.png')
+  }
+
   var data = this.evaluate(function (json) {
     // parse_page exists in remote parser.js
     return parse_page(json)
@@ -47,11 +51,11 @@ function process_page () {
     storage.store(casper, data, file)
   }
 
-  var next_sel = null
+  var paginate = null
 
   for (var i = 0; i < pagination.length; i++) {
     if (this.exists(pagination[i]) === true) {
-      next_sel = pagination[i]
+      paginate = pagination[i]
 
       log.debug('Button exists : ' + pagination[i])
       break
@@ -60,7 +64,7 @@ function process_page () {
     log.debug('Button not exists : ' + pagination[i])
   }
 
-  if (next_sel == null) {
+  if (paginate == null) {
     log.debug('Next button not found')
     casper.exit(0)
   }
@@ -72,8 +76,10 @@ function process_page () {
   }
 
   // If script didn't finish, then click on the next button and go to process next page
-  this.thenClick(next_sel).then(function () {
-    this.waitForSelector(waiter, process_page, stop_script)
+  this.thenClick(paginate).then(function () {
+    this.wait(2000, function () {
+      this.waitForSelector(waiter, process_page, stop_script)
+    })
   })
 }
 
