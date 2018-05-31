@@ -1,15 +1,12 @@
 var utils = require('utils')
 var casper = require('../src/casper').casper
 var option = require('../src/option')
-var storage = require('../src/storage')
 var log = require('../src/log')
 
 // Parse options
 var url = option.get('url', casper.cli.options, null)
 var crawler = option.get('crawler', casper.cli.options, null)
-var pages = option.get('pages', casper.cli.options, 50)
-var stdout = option.get('stdout', casper.cli.options)
-var file = option.get('file', casper.cli.options, null)
+var page = option.get('page', casper.cli.options, 50)
 var test = option.get('test', casper.cli.options)
 
 var json = require(crawler)
@@ -45,11 +42,7 @@ function process_page () {
 
   log.debug('Found new jobs : ' + data.length)
 
-  if (stdout) {
-    print_data(data)
-  } else {
-    storage.store(casper, data, file)
-  }
+  print_data(data)
 
   var paginate = null
 
@@ -70,7 +63,7 @@ function process_page () {
   }
 
   // If we have crawled maximum
-  if (pages !== 0 && count >= pages) {
+  if (page !== 0 && count >= page) {
     log.debug('End of count against pages : ' + count)
     casper.exit(0)
   }
@@ -91,6 +84,8 @@ function print_data (data) {
     console.log(JSON.stringify(data[i]))
   }
 }
+
+log.debug('Scraping data from : ' + host)
 
 // Main
 casper.start(url)
