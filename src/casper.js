@@ -21,7 +21,7 @@ casper.options.viewportSize = { width: 1920, height: 1080 }
 
 casper.on('complete.error', function (err) {
   log.debug('Complete Error: ', err, 'ERROR')
-});
+})
 
 casper.on('remote.message', function (msg) {
   log.debug('Remote Message', msg, 'INFO')

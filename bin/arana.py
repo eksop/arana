@@ -36,11 +36,16 @@ def main(url, config, page, casperjs):
     $ arana https://jobs.apple.com/in/search config/apple.json
     """
 
-    cmd = '{} bin/scrape.js --disk-cache=true --url={} --crawler={} --page={}'.format(
-        casperjs, url, os.path.abspath(config), page
-    )
+    command = [
+        casperjs,
+        os.path.dirname(os.path.realpath(__file__)) + '/scrape.js',
+        '--disk-cache=true',
+        '--url={}'.format(url),
+        '--crawler={}'.format(os.path.abspath(config)),
+        '--page={}'.format(page),
+    ]
 
-    ret = run_casper(cmd)
+    ret = run_casper(command)
 
     if ret['error']:
         sys.stderr.write(json.dumps((ret)))
@@ -55,7 +60,7 @@ def run_casper(cmd):
     try:
         completed = subprocess.run(
             cmd,
-            shell=True,
+            cwd=os.path.dirname(os.path.realpath(__file__)) + '/..',
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
