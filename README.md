@@ -9,6 +9,9 @@ You need to install casperjs and phantomjs for arana to work
 ``` shell
 # Make sure npm is installed
 $ npm -g install phantomjs-prebuilt casperjs
+
+# Install click from pip
+$ pip install click
 ```
 
 Then clone the repo
@@ -53,7 +56,7 @@ Run the scrape command
 ``` shell
 $ cd ~/arana
 
-$ casperjs ~/arana/bin/crawler.js --disk-cache=true --url="https://www.naukri.com/jobs-in-bangalore" --crawler=~/arana/config/naukri.json --pages=1 --stdout | jq .
+$ ./arana "https://www.naukri.com/jobs-in-bangalore" ~/arana/config/naukri.json | jq .
 ```
 
 Scraped output
