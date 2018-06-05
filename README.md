@@ -1,6 +1,12 @@
 # arana
+  __ _ _ __ __ _ _ __   __ _
+ / _` | '__/ _` | '_ \ / _` |
+| (_| | | | (_| | | | | (_| |
+ \__,_|_|  \__,_|_| |_|\__,_|
 
-Arana is web scraper. It built on top of CasperJS. It works with purely dynamically loaded websites.
+Arana is a web scraper built on top of casperJS.
+
+It works with purely dynamically loaded websites.
 
 ## Install
 
@@ -55,6 +61,8 @@ Run the scrape command
 
 ``` shell
 $ cd ~/arana
+
+# Provide the scrape URL and CONFIG file as arguments
 
 $ ./arana "https://www.naukri.com/jobs-in-bangalore" ~/arana/config/naukri.json | jq .
 ```
