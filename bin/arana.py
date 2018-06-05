@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# Arana CLI
-
 import os
 import subprocess
 import sys
