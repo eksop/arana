@@ -1,8 +1,11 @@
 # arana
+
+``` text
   __ _ _ __ __ _ _ __   __ _
  / _` | '__/ _` | '_ \ / _` |
 | (_| | | | (_| | | | | (_| |
  \__,_|_|  \__,_|_| |_|\__,_|
+```
 
 Arana is a web scraper built on top of casperJS.
 
