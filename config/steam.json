@@ -1,0 +1,17 @@
+{
+  "host": "steam.com",
+  "selector": "div#search_result_container div a.search_result_row",
+  "waiter": "div#search_result_container div a.search_result_row",
+  "pagination": [
+    "div.search_pagination_right a:last-child"
+  ],
+  "parser": [
+    ["appid", "", "attr", "data-ds-appid"],
+    ["image", "div.col.search_capsule img", "attr", "src"],
+    ["name", "div.responsive_search_name_combined div:nth-child(1)", "text", ""],
+    ["released", "div.responsive_search_name_combined div:nth-child(2)", "text", ""],
+    ["offer", "div.responsive_search_name_combined div:nth-child(4) div:nth-child(1)", "text", ""],
+    ["original", "div.responsive_search_name_combined div:nth-child(4) div:nth-child(2) span", "text", ""],
+    ["price", "div.responsive_search_name_combined div:nth-child(4) div:nth-child(2)", "text", ""]
+  ]
+}
