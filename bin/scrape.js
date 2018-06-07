@@ -16,12 +16,20 @@ var waiter = json['waiter']
 var pagination = json['pagination']
 
 var count = 0
+var output = {}
+output['error'] = false
+output['original_url'] = url
+output['data'] = []
+output['next_url'] = null
 
 /**
  * Stop the script
  */
 function stop_script () {
   log.debug('xt stopping script prematurely', {}, 'ERROR')
+  output['error'] = 'Timed out while waiting for selector'
+  console.log(JSON.stringify(output))
+
   casper.exit(3)
 }
 
@@ -40,9 +48,13 @@ function process_page () {
     return parse_page(json)
   }, json)
 
-  log.debug('Found new jobs : ' + data.length)
+  log.debug('Found new data : ' + data.length)
 
-  print_data(data)
+  var row = {}
+  row['url'] = this.getCurrentUrl()
+  row['data'] = data
+
+  output['data'].push(row)
 
   var paginate = null
 
@@ -57,15 +69,29 @@ function process_page () {
     log.debug('Button not exists : ' + pagination[i])
   }
 
+  // Do we have a next button
   if (paginate == null) {
     log.debug('Next button not found')
+    console.log(JSON.stringify(output))
+
     casper.exit(0)
   }
 
   // If we have crawled maximum
   if (page !== 0 && count >= page) {
     log.debug('End of count against pages : ' + count)
-    casper.exit(0)
+
+    this.thenClick(paginate).then(function () {
+      this.wait(2000, function () {
+        this.waitForSelector(waiter, function () {
+          count += 1
+          output['next_url'] = this.getCurrentUrl()
+          console.log(JSON.stringify(output))
+
+          casper.exit(0)
+        }, stop_script)
+      })
+    })
   }
 
   // If script didn't finish, then click on the next button and go to process next page
@@ -74,15 +100,6 @@ function process_page () {
       this.waitForSelector(waiter, process_page, stop_script)
     })
   })
-}
-
-/**
- * Print on stdout
- */
-function print_data (data) {
-  for (var i = 0; i < data.length; i++) {
-    console.log(JSON.stringify(data[i]))
-  }
 }
 
 log.debug('Scraping data from : ' + host)

@@ -1,21 +1,20 @@
 var require = patchRequire(require)
-
-var fs = require('fs')
 var log = require('../src/log')
 
 var casper = require('casper').create({
   verbose: false,
   logLevel: 'error',
   pageSettings: {
-    loadImages: true,        // The WebPage instance used by Casper will
-    loadPlugins: true         // use these settings
+    loadImages: true,
+    loadPlugins: true,
+    webSecurityEnabled: false
   },
   clientScripts: [
     './remote/parser.js'
   ]
 })
 
-casper.userAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X)')
+casper.userAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11')
 
 casper.options.viewportSize = { width: 1920, height: 1080 }
 
@@ -55,21 +54,36 @@ casper.on('page.resource.requested', function (request, network) {
 })
 
 casper.on('page.error', function (msg, trace) {
-  //log.debug('Page Error: ' + msg, trace, 'ERROR')
+  var stack = ['ERROR: ' + msg]
+  if (trace && trace.length) {
+    stack.push('TRACE:')
+    trace.forEach(function (t) {
+      stack.push(' -> ' + t.file + ': ' + t.line + (t.function ? ' (in function "' + t.function + '")' : ''))
+    })
+  }
+
+  log.debug('Page Error: ' + msg, stack, 'ERROR')
 })
 
 // Casper Object related
 casper.on('die', function (msg, status) {
-  log.debug('Casper Die: ' + msg, {'msg': msg, 'status':status}, 'INFO')
+  log.debug('Casper Die: ' + msg, {'msg': msg, 'status': status}, 'INFO')
 })
 
 casper.on('error', function (msg, trace) {
-  log.debug('Casper Die: ' + msg, trace, 'ERROR')
+  var stack = ['ERROR: ' + msg]
+  if (trace && trace.length) {
+    stack.push('TRACE:')
+    trace.forEach(function (t) {
+      stack.push(' -> ' + t.file + ': ' + t.line + (t.function ? ' (in function "' + t.function + '")' : ''))
+    })
+  }
+
+  log.debug('Casper Die: ' + msg, stack, 'ERROR')
 })
 
 casper.on('exit', function (status) {
   log.debug('Casper Exit: ' + status, {}, 'INFO')
 })
-
 
 exports.casper = casper

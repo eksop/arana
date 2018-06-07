@@ -6,6 +6,8 @@ import subprocess
 import sys
 import json
 import click
+from urllib.robotparser import RobotFileParser
+from urllib.parse import urlsplit
 
 @click.command()
 @click.argument('url')
@@ -36,6 +38,16 @@ def main(url, config, page, casperjs):
     $ arana https://jobs.apple.com/in/search config/apple.json
     """
 
+    robotstxt = parse_robotstxt(url)
+
+    if robotstxt is False:
+        sys.stderr.write(json.dumps((dict(error=True, msg='Incorrect URL'))))
+        sys.exit(1)
+
+    if robotstxt['allowed'] is False:
+        sys.stderr.write(json.dumps((dict(error=True, msg='Crawling not allowed by robots.txt'))))
+        sys.exit(1)
+
     command = [
         casperjs,
         os.path.dirname(os.path.realpath(__file__)) + '/scrape.js',
@@ -52,6 +64,29 @@ def main(url, config, page, casperjs):
         sys.exit(ret['exitcode'])
 
     print(ret['stdout'])
+
+def parse_robotstxt(url):
+    """
+    Parse robots.txt
+    """
+
+    parsed = urlsplit(url)
+
+    if parsed.scheme not in ['http', 'https']:
+        return False
+
+    if parsed.netloc == '':
+        return False
+
+    robot = RobotFileParser()
+    robot.set_url(parsed.scheme + "://" + parsed.netloc + "/robots.txt")
+    robot.read()
+
+    return dict(
+        allowed=robot.can_fetch('*', url),
+        rate=robot.request_rate('*'),
+        delay=robot.crawl_delay('*'),
+    )
 
 def run_casper(cmd):
     """
