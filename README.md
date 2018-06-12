@@ -37,25 +37,18 @@ Scraper config file
 
 ``` javascript
 {
-  "host": "naukri.com",
-  "selector": "div.row[itemtype=\"http://schema.org/JobPosting\"]",
-  "waiter": "div.row[type=tuple]",
+  "host": "apple.com",
+  "selector": "table#jobs_list tbody tr.searchresult",
+  "waiter": "table#jobs_list tbody tr.searchresult td.title a",
   "pagination": [
-    "div.pagination > a:nth-child(2) > button",
-    "div.pagination > a > button"
+    "a.arrow_next.enabled"
   ],
   "parser": [
-    ["company_image", "a.content div.banner img", "attr", "src"],
-    ["company_name", "a.content span.org", "text", ""],
-    ["description", "a.content div.more span.desc", "text", ""],
-    ["experience", "a.content span.exp", "text", ""],
-    ["location", "a.content span.loc", "text", ""],
-    ["posted_by", "div.other_details div.rec_details a", "text", ""],
-    ["posted_on", "div.other_details div.rec_details span.date", "text", ""],
-    ["salary", "div.other_details span.salary", "text", ""],
-    ["skills", "a.content div.more div.desc span.skill", "text", ""],
-    ["title", "a.content span.desig", "text", ""],
-    ["url", "a.content", "attr", "href"]
+    ["title", "tr.searchresult td.title a", "text", ""],
+    ["job_id", "tr.searchresult td.title a", "attr", "id"],
+    ["job_type", "tr.searchresult td:nth-child(2) p", "text", ""],
+    ["location", "tr.searchresult td:nth-child(3) p", "text", ""],
+    ["posted_on", "tr.searchresult td:nth-child(4) p", "text", ""]
   ]
 }
 ```
@@ -67,36 +60,43 @@ $ cd ~/arana
 
 # Provide the scrape URL and CONFIG file as arguments
 
-$ ./arana "https://www.naukri.com/jobs-in-bangalore" ~/arana/config/naukri.json | jq .
+$ ./arana -p 1 'https://jobs.apple.com/in/search#&t=0&lo=0*IND&pN=3' ./config/apple.json  | jq .
 ```
 
 Scraped output
 
 ``` javascript
 {
-  "company_image": false,
-  "company_name": "AUTODESK INDIA PRIVATE LIMITED",
-  "description": "Experience deciding when to use common software design and architectural patterns, including server-less ...",
-  "experience": "7-12 yrs",
-  "location": "Bengaluru",
-  "posted_by": "Priyanka Sharma",
-  "posted_on": "Just Now",
-  "salary": "Not disclosed",
-  "skills": "devops, restful, aws, java, html, ajax, Bash Scripting, perl scripting...",
-  "title": false,
-  "url": "https://www.naukri.com/job-listings-Digital-Data-Platform-Engineer-AUTODESK-INDIA-PRIVATE-LIMITED-Bengaluru-7-to-12-years-290518004999?src=jobsearchDesk&sid=15275912888203&xp=1&px=1"
-}
-{
-  "company_image": false,
-  "company_name": "Ways & Works Consulting LLP",
-  "description": false,
-  "experience": "3-7 yrs",
-  "location": "Bengaluru",
-  "posted_by": "Neha",
-  "posted_on": "Just Now",
-  "salary": "4,00,000 - 9,00,000 P.A.",
-  "skills": "Node.Js, Usability, Usability Flash action script, HTML, Mean Stack, J2Ee...",
-  "title": false,
-  "url": "https://www.naukri.com/job-listings-Node-JS-Developers-Ways-Works-Consulting-LLP-Bengaluru-3-to-7-years-290518004997?src=jobsearchDesk&sid=15275912888203&xp=2&px=1"
+  "error": false,
+  "original_url": "https://jobs.apple.com/in/search#&t=0&lo=0*IND&pN=3",
+  "data": [
+    {
+      "url": "https://jobs.apple.com/in/search#&t=0&lo=0*IND&pN=3",
+      "data": [
+        {
+          "job_id": "jobs_list-113400504",
+          "job_type": "Information Systems and Technology",
+          "location": "Hyderabad",
+          "posted_on": "4-June-2018",
+          "title": "Senior UI Engineer - Apple Online Store"
+        },
+        {
+          "job_id": "jobs_list-113408197",
+          "job_type": "Information Systems and Technology",
+          "location": "Hyderabad",
+          "posted_on": "4-June-2018",
+          "title": "Security PenTest Engineer - Apple Online Store"
+        },
+        {
+          "job_id": "jobs_list-113545179",
+          "job_type": "Marketing",
+          "location": "Gurgaon",
+          "posted_on": "10-April-2018",
+          "title": "CD - Art"
+        }
+      ]
+    }
+  ],
+  "next_url": null
 }
 ```
