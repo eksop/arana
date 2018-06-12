@@ -31,7 +31,7 @@ $ git clone https://github.com/rajats105/arana.git ~/arana
 
 ## Examples
 
-Scraping job lisitings from naukri
+Scraping job lisitings from apple.com
 
 Scraper config file
 
