@@ -1,20 +1,5 @@
 var require = patchRequire(require)
 
-var wait = {
-  'www.shine.com': 'div.search_listingleft a span.snp_yoe_loc em.snp_loc',
-  'www.naukri.com': 'div.row[type=tuple]'
-}
-
-var next = {
-  'www.shine.com': [
-    'input.cls_paginate.submit[data-type=next]'
-  ],
-  'www.naukri.com': [
-    'div.pagination > a:nth-child(2) > button',
-    'div.pagination > a > button'
-  ]
-}
-
 /**
  * Extract domain name
  */
