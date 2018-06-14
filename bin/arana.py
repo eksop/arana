@@ -38,6 +38,7 @@ def main(url, config, page, casperjs):
     $ arana https://jobs.apple.com/in/search config/apple.json
     """
 
+    """
     robotstxt = parse_robotstxt(url)
 
     if robotstxt is False:
@@ -47,6 +48,7 @@ def main(url, config, page, casperjs):
     if robotstxt['allowed'] is False:
         sys.stderr.write(json.dumps((dict(error=True, msg='Crawling not allowed by robots.txt'))))
         sys.exit(1)
+    """
 
     command = [
         casperjs,

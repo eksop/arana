@@ -1,0 +1,18 @@
+{
+  "host": "myntra.com",
+  "selector": "ul.results-base li.product-base",
+  "waiter": "ul.results-base li.product-base a img.product-thumb",
+  "scroll": true,
+  "page": "spa",
+  "pagination": [
+    "div.results-showMoreContainer div.results-showmore"
+  ],
+  "parser": [
+    ["link", "a", "attr", "href"],
+    ["brand", "a div.product-productMetaInfo div.product-brand", "text", ""],
+    ["product", "a div.product-productMetaInfo h4.product-product", "text", ""],
+    ["original", "a div.product-productMetaInfo div.product-price span span.product-strike", "text", ""],
+    ["price", "a div.product-productMetaInfo div.product-price span span.product-discountedPrice", "text", ""],
+    ["offer", "a div.product-productMetaInfo div.product-price span.product-discountPercentage", "text", ""]
+  ]
+}

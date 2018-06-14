@@ -5,7 +5,7 @@ var casper = require('casper').create({
   verbose: false,
   logLevel: 'error',
   pageSettings: {
-    loadImages: true,
+    loadImages: false,
     loadPlugins: true,
     webSecurityEnabled: false
   },

@@ -39,6 +39,10 @@ function stop_script () {
 function process_page () {
   count += 1
 
+  if (option.get('scroll', json, false)) {
+    this.scrollToBottom()
+  }
+
   if (test) {
     this.capture('screen/page_' + count + '.png')
   }
@@ -54,7 +58,12 @@ function process_page () {
   row['url'] = this.getCurrentUrl()
   row['data'] = data
 
-  output['data'].push(row)
+  if (option.get('page', json, 'normal') === 'spa') {
+    output['data'].length = 0
+    output['data'].push(row)
+  } else {
+    output['data'].push(row)
+  }
 
   var paginate = null
 
@@ -82,7 +91,7 @@ function process_page () {
     log.debug('End of count against pages : ' + count)
 
     this.thenClick(paginate).then(function () {
-      this.wait(2000, function () {
+      this.wait(5000, function () {
         this.waitForSelector(waiter, function () {
           count += 1
           output['next_url'] = this.getCurrentUrl()
@@ -96,7 +105,7 @@ function process_page () {
 
   // If script didn't finish, then click on the next button and go to process next page
   this.thenClick(paginate).then(function () {
-    this.wait(2000, function () {
+    this.wait(5000, function () {
       this.waitForSelector(waiter, process_page, stop_script)
     })
   })
