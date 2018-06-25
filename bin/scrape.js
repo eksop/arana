@@ -78,16 +78,13 @@ function process_page () {
     log.debug('Button not exists : ' + pagination[i])
   }
 
-  // Do we have a next button
   if (paginate == null) {
+    // Do we have a next button
     log.debug('Next button not found')
     console.log(JSON.stringify(output))
 
     casper.exit(0)
-  }
-
-  // If we have crawled maximum
-  if (page !== 0 && count >= page) {
+  } else if (page !== 0 && count >= page) {
     log.debug('End of count against pages : ' + count)
 
     this.thenClick(paginate).then(function () {
@@ -101,14 +98,14 @@ function process_page () {
         }, stop_script)
       })
     })
-  }
-
-  // If script didn't finish, then click on the next button and go to process next page
-  this.thenClick(paginate).then(function () {
-    this.wait(5000, function () {
-      this.waitForSelector(waiter, process_page, stop_script)
+  } else {
+    // If script didn't finish, then click on the next button and go to process next page
+    this.thenClick(paginate).then(function () {
+      this.wait(5000, function () {
+        this.waitForSelector(waiter, process_page, stop_script)
+      })
     })
-  })
+  }
 }
 
 log.debug('Scraping data from : ' + host)

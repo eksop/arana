@@ -16,7 +16,7 @@ function parse_element (element, selector, type, attr) {
   var ret = parse_selector(element, selector)
 
   if (ret === false) {
-    return false
+    return ''
   }
 
   switch (type) {
@@ -26,7 +26,7 @@ function parse_element (element, selector, type, attr) {
       return ret.textContent.replace(/^\s+|\s+$/g, '')
   }
 
-  return null
+  return ''
 }
 
 function parse_link (element, selector, type, attr) {
@@ -48,7 +48,7 @@ function parse_link (element, selector, type, attr) {
     return url
   }
 
-  return null
+  return ''
 }
 
 function parse_key (element, selector, parser) {
